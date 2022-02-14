@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  nginx-rtmp:
+    build:
+     context: .
+     dockerfile: ./nginx/Dockerfile
+    container_name: ngx-transcoder
+    hostname: ngx-transcoder
+    restart: always
+    privileged: true
+    network_mode: host
+    volumes:
+     - /etc/localtime:/etc/localtime
+     - /opt/stream1/nginx/nginx.conf:/opt/nginx/conf/nginx.conf
+     - /opt/stream1/nginx/rtmp:/opt/nginx/conf/rtmp
+     - /opt/stream1/nginx/hls:/opt/nginx/conf/hls
+       #- /opt/stream1/data/hls:/opt/data/hls
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/lib/docker:/var/lib/docker
+     - /usr/bin/docker:/usr/bin/docker
+     - /dev/shm:/dev/shm
+    command:
+     - /opt/nginx/sbin/nginx
